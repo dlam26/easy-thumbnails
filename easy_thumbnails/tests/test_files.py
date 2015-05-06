@@ -294,6 +294,42 @@ class FilesTest(test.BaseTest):
             self.assertRegex(
                 actual[2], r'^Command\ .+returned non-zero exit status 1$')
 
+    @unittest.skipIf(
+        'easy_thumbnails.optimize' not in settings.INSTALLED_APPS,
+        'optimize app not installed')
+    @unittest.skipIf(LogCapture is None, 'testfixtures not installed')
+    def test_postprocessor_remote_storage(self):
+        """Same as test_postprocessor, but using a remote_storage."""
+        settings.THUMBNAIL_OPTIMIZE_COMMAND = {
+            'png': 'easy_thumbnails/tests/mockoptim.py {filename}'}
+        with LogCapture() as logcap:
+            self.remote_thumbnailer.thumbnail_extension = 'png'
+            self.remote_thumbnailer.get_thumbnail({'size': (10, 10)})
+            actual = tuple(logcap.actual())[0]
+            self.assertEqual(actual[0], 'easy_thumbnails.optimize')
+            self.assertEqual(actual[1], 'INFO')
+            self.assertRegex(
+                actual[2],
+                '^easy_thumbnails/tests/mockoptim.py [^ ]+ returned nothing$')
+
+    @unittest.skipIf(
+        'easy_thumbnails.optimize' not in settings.INSTALLED_APPS,
+        'optimize app not installed')
+    @unittest.skipIf(LogCapture is None, 'testfixtures not installed')
+    def test_postprocessor_remote_storage_fail(self):
+        """Again same as test_postprocessor_fail, but using a remote_storage"""
+        settings.THUMBNAIL_OPTIMIZE_COMMAND = {
+            'png': 'easy_thumbnails/tests/mockoptim_fail.py {filename}'}
+        with LogCapture() as logcap:
+            self.remote_thumbnailer.thumbnail_extension = 'png'
+            self.remote_thumbnailer.get_thumbnail({'size': (10, 10)})
+            actual = tuple(logcap.actual())[0]
+            self.assertEqual(actual[0], 'easy_thumbnails.optimize')
+            self.assertEqual(actual[1], 'ERROR')
+            self.assertRegex(
+                actual[2], r'^Command\ .+returned non-zero exit status 1$')
+
+
     def test_USE_TZ(self):
         settings.USE_TZ = True
         self.thumbnailer.get_thumbnail({'size': (10, 20)})
