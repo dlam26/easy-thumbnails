@@ -1,6 +1,31 @@
 Changes
 =======
 
+2.2.1 (2014-12-30)
+------------------
+
+* Fixed: Option ``zoom`` can also be used by itself, without combining it with ``crop``.
+
+2.2 (2014-10-04)
+----------------
+
+* Fix migrations for Django 1.7 final.
+
+* Fix contain bad image EXIFs being able to still raise an exception.
+
+2.1 (2014-08-13)
+----------------
+
+* Fix Python 3.4 installation issue.
+
+* Avoid an OverflowError due to invalid EXIF data.
+
+* Fix bug causing JPEG images to be saved without optimization :(
+
+* JPEG files can now be saved with progressive encoding. By default, any image
+  with a dimension larger than 100px will be saved progressively. Configured
+  with the ``THUMBNAILER_PROGRESSIVE`` setting.
+
 2.0.1 (2014-04-26)
 ------------------
 

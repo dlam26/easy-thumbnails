@@ -156,6 +156,17 @@ class Settings(AppSettings):
     recommended.
     """
 
+    THUMBNAIL_PROGRESSIVE = 100
+    """
+    Use progressive JPGs for thumbnails where either dimension is at least this
+    many pixels.
+
+    For example, a 90x90 image will be saved as a baseline JPG while a 728x90
+    image will be saved as a progressive JPG.
+
+    Set to ``False`` to never use progressive encoding.
+    """
+
     THUMBNAIL_EXTENSION = 'jpg'
     """
     The type of image to save thumbnails with no transparency layer as.
@@ -309,6 +320,12 @@ class Settings(AppSettings):
     dimensions for a thumbnailed file. This option will store them in
     the database to be recalled quickly when required. Note: the old method
     still works as a fall back.
+    """
+
+    THUMBNAIL_WIDGET_OPTIONS = {'size': (80, 80)}
+    """
+    Default options for the
+    :class:`easy_thumbnails.widgets.ImageClearableFileInput` widget.
     """
 
 settings = Settings()

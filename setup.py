@@ -1,6 +1,7 @@
 #!/usr/bin/env python
+from __future__ import unicode_literals
+import codecs
 import os
-
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
@@ -28,7 +29,7 @@ def read_files(*filenames):
     """
     output = []
     for filename in filenames:
-        f = open(filename)
+        f = codecs.open(filename, encoding='utf-8')
         try:
             output.append(f.read())
         finally:
@@ -63,6 +64,7 @@ setup(
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
